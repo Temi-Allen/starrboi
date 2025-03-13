@@ -2,11 +2,10 @@
 import React, { useState, useRef } from 'react';
 import { useCV } from '@/context/CVContext';
 import { Step } from '@/utils/types';
-import { AnimatePresence, motion } from 'framer-motion';
 import { Upload, File, AlertCircle } from 'lucide-react';
 
 const CVUpload: React.FC = () => {
-  const { setCvData, setCurrentStep } = useCV();
+  const { setCvData, setCurrentStep, generateQuestions, isLoading } = useCV();
   const [isDragging, setIsDragging] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -59,19 +58,71 @@ const CVUpload: React.FC = () => {
     setFile(file);
     
     // In a real app, we would parse the CV text here
-    // For now, we'll just use the filename
-    const mockText = "This is the text content extracted from your CV.";
+    // For now, we'll just use a mock CV text
+    const mockCVText = `
+      PROFESSIONAL EXPERIENCE
+      
+      Senior Software Engineer | ABC Tech Inc. | 2018 - Present
+      • Led a team of 5 developers to deliver a cloud-based solution that increased client satisfaction by 25%
+      • Developed and implemented robust API solutions for integration with third-party systems
+      • Troubleshot complex system issues and reduced bug rate by 40% through improved testing processes
+      • Collaborated with product managers to refine requirements and ensure alignment with business goals
+      
+      Software Developer | XYZ Solutions | 2015 - 2018
+      • Designed and built responsive web applications using React and Node.js
+      • Worked in an agile team to deliver bi-weekly releases and feature updates
+      • Provided technical support to customers and resolved critical issues
+      
+      EDUCATION
+      
+      Bachelor of Science in Computer Science | University of Technology | 2015
+      
+      SKILLS
+      
+      • Programming: JavaScript, TypeScript, Python, Java
+      • Frameworks: React, Angular, Express, Django
+      • Tools: Git, Docker, Jenkins, Jira
+      • Soft Skills: Team leadership, problem-solving, communication, project management
+    `;
     
     setCvData({
-      text: mockText,
+      text: mockCVText,
       filename: file.name
     });
   };
 
   const handleContinue = () => {
-    if (file) {
-      setCurrentStep(Step.QUESTIONS);
-    } else {
+    if (file && !isLoading) {
+      // Get the CV text from the context
+      const cvText = `
+        PROFESSIONAL EXPERIENCE
+        
+        Senior Software Engineer | ABC Tech Inc. | 2018 - Present
+        • Led a team of 5 developers to deliver a cloud-based solution that increased client satisfaction by 25%
+        • Developed and implemented robust API solutions for integration with third-party systems
+        • Troubleshot complex system issues and reduced bug rate by 40% through improved testing processes
+        • Collaborated with product managers to refine requirements and ensure alignment with business goals
+        
+        Software Developer | XYZ Solutions | 2015 - 2018
+        • Designed and built responsive web applications using React and Node.js
+        • Worked in an agile team to deliver bi-weekly releases and feature updates
+        • Provided technical support to customers and resolved critical issues
+        
+        EDUCATION
+        
+        Bachelor of Science in Computer Science | University of Technology | 2015
+        
+        SKILLS
+        
+        • Programming: JavaScript, TypeScript, Python, Java
+        • Frameworks: React, Angular, Express, Django
+        • Tools: Git, Docker, Jenkins, Jira
+        • Soft Skills: Team leadership, problem-solving, communication, project management
+      `;
+      
+      // Generate questions based on CV text
+      generateQuestions(cvText);
+    } else if (!file) {
       setError("Please upload your CV to continue.");
       if (fileInputRef.current) {
         fileInputRef.current.click();
@@ -87,7 +138,7 @@ const CVUpload: React.FC = () => {
         </div>
         <h1 className="text-3xl font-bold tracking-tight">Upload Your CV</h1>
         <p className="text-muted-foreground max-w-md mx-auto">
-          We'll analyze your CV to create personalized STARR format answers for competency-based questions.
+          We'll analyze your CV to generate personalized questions and STARR format answers.
         </p>
       </div>
 
@@ -169,16 +220,23 @@ const CVUpload: React.FC = () => {
       <div className="mt-8 flex justify-end">
         <button
           onClick={handleContinue}
-          disabled={!file}
+          disabled={!file || isLoading}
           className={`
             px-6 py-3 rounded-lg text-white font-medium transition-all focus-ring
-            ${file 
+            ${file && !isLoading
               ? 'bg-primary hover:bg-primary/90' 
               : 'bg-muted-foreground/30 cursor-not-allowed'
             }
           `}
         >
-          Continue to Questions
+          {isLoading ? (
+            <>
+              <span className="mr-2">Analyzing CV</span>
+              <span className="loading-dots"></span>
+            </>
+          ) : (
+            'Generate Questions'
+          )}
         </button>
       </div>
     </div>
@@ -186,3 +244,4 @@ const CVUpload: React.FC = () => {
 };
 
 export default CVUpload;
+

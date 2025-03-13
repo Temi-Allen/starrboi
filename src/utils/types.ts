@@ -23,3 +23,10 @@ export enum Step {
   QUESTIONS = 'questions',
   ANSWERS = 'answers'
 }
+
+export interface GenerateQuestionsResponse {
+  questions: Question[];
+  success: boolean;
+  error?: string;
+}
+
