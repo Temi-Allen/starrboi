@@ -119,44 +119,44 @@ export const CVProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     // Define question templates for each category
     const questionTemplates: Record<string, string[]> = {
       'leadership': [
-        'Describe a situation where you had to lead a team through a challenging project.',
-        'Tell me about a time when you had to make an unpopular decision as a leader.',
-        'Give an example of how you motivated your team during a difficult period.'
+        "Describe a situation where you had to lead a team through a challenging project.",
+        "Tell me about a time when you had to make an unpopular decision as a leader.",
+        "Give an example of how you motivated your team during a difficult period."
       ],
       'problem solving': [
-        'Tell me about a complex problem you solved at work.',
-        'Describe a situation where you had to think creatively to overcome an obstacle.',
-        'Give an example of how you identified and resolved a process issue in your work.'
+        "Tell me about a complex problem you solved at work.",
+        "Describe a situation where you had to think creatively to overcome an obstacle.",
+        "Give an example of how you identified and resolved a process issue in your work."
       ],
       'teamwork': [
-        'Describe a successful team project you worked on and your contribution.',
-        'Tell me about a time when you had to work with someone difficult in a team.',
-        'Give an example of how you supported a team member who was struggling.'
+        "Describe a successful team project you worked on and your contribution.",
+        "Tell me about a time when you had to work with someone difficult in a team.",
+        "Give an example of how you supported a team member who was struggling."
       ],
       'communication': [
-        'Tell me about a situation where your communication skills made a difference.',
-        'Describe a time when you had to explain a complex concept to someone.',
-        'Give an example of how you handled a communication breakdown.'
+        "Tell me about a situation where your communication skills made a difference.",
+        "Describe a time when you had to explain a complex concept to someone.",
+        "Give an example of how you handled a communication breakdown."
       ],
       'adaptability': [
-        'Describe a time when you had to adapt to a significant change at work.',
-        'Tell me about a situation where you had to learn a new skill quickly.',
-        'Give an example of how you remained flexible when plans changed unexpectedly.'
+        "Describe a time when you had to adapt to a significant change at work.",
+        "Tell me about a situation where you had to learn a new skill quickly.",
+        "Give an example of how you remained flexible when plans changed unexpectedly."
       ],
       'technical': [
-        'Describe a challenging technical problem you solved.',
-        'Tell me about a technical project you're particularly proud of.',
-        'Give an example of how you used technology to improve a process or outcome.'
+        "Describe a challenging technical problem you solved.",
+        "Tell me about a technical project you're particularly proud of.",
+        "Give an example of how you used technology to improve a process or outcome."
       ],
       'project management': [
-        'Describe a project you managed and how you ensured it was completed on time.',
-        'Tell me about a time when you had to handle multiple competing priorities.',
-        'Give an example of how you recovered a project that was falling behind schedule.'
+        "Describe a project you managed and how you ensured it was completed on time.",
+        "Tell me about a time when you had to handle multiple competing priorities.",
+        "Give an example of how you recovered a project that was falling behind schedule."
       ],
       'customer service': [
-        'Describe a situation where you went above and beyond for a customer.',
-        'Tell me about a difficult customer interaction and how you handled it.',
-        'Give an example of how you improved customer satisfaction in your role.'
+        "Describe a situation where you went above and beyond for a customer.",
+        "Tell me about a difficult customer interaction and how you handled it.",
+        "Give an example of how you improved customer satisfaction in your role."
       ]
     };
     
@@ -272,4 +272,3 @@ export const useCV = (): CVContextType => {
   }
   return context;
 };
-
