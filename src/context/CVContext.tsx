@@ -31,6 +31,7 @@ export const CVProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [answer, setAnswer] = useState<STARRAnswer | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [questions, setQuestions] = useState<Question[]>(competencyQuestions);
+  const [extractedCompanies, setExtractedCompanies] = useState<string[]>([]);
 
   // Generate STARR questions based on CV text
   const generateQuestions = async (cvText: string): Promise<void> => {
@@ -43,6 +44,10 @@ export const CVProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       
       // Extract keywords from CV to categorize questions
       const keywords = extractKeywordsFromCV(cvText);
+      
+      // Extract companies from CV
+      const companies = extractCompaniesFromCV(cvText);
+      setExtractedCompanies(companies);
       
       // Generate custom questions based on CV keywords
       const generatedQuestions = generateCustomQuestions(keywords);
@@ -63,6 +68,25 @@ export const CVProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  // Extract company names from CV text
+  const extractCompaniesFromCV = (cvText: string): string[] => {
+    // In a real implementation, this would use NLP or regex to extract company names
+    // For this demo, we'll do some basic extraction
+    const companyRegex = /\|\s*([^|]+?)\s*\|/g;
+    const matches = [...cvText.matchAll(companyRegex)];
+    const companies = matches.map(match => match[1].trim());
+    
+    // Filter out non-company matches (like dates or roles)
+    const filteredCompanies = companies.filter(company => 
+      !company.match(/^\d{4}\s*-\s*\d{4}$/) && // Filter out date ranges
+      !company.match(/^\d{4}\s*-\s*Present$/) && // Filter out date ranges with "Present"
+      company.length > 1 // Skip very short strings
+    );
+    
+    // Return unique company names
+    return [...new Set(filteredCompanies)];
   };
 
   // This function extracts keywords from CV text for categorization
@@ -218,7 +242,19 @@ export const CVProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       await new Promise(resolve => setTimeout(resolve, 2000));
       
       // In a real app, this would make an API call to generate the STARR answer
-      setAnswer(mockSTARRAnswer);
+      // For this demo, we'll customize the mockSTARRAnswer with company info
+      const customAnswer = { ...mockSTARRAnswer };
+      
+      // If we have extracted companies, use the first one in the answer
+      if (extractedCompanies.length > 0) {
+        const company = extractedCompanies[0];
+        customAnswer.situation = customAnswer.situation.replace(
+          "my previous company", 
+          company
+        );
+      }
+      
+      setAnswer(customAnswer);
       setCurrentStep(Step.ANSWERS);
     } catch (error) {
       console.error('Error generating answer:', error);
@@ -238,6 +274,7 @@ export const CVProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     setAnswer(null);
     setCurrentStep(Step.UPLOAD);
     setQuestions(competencyQuestions);
+    setExtractedCompanies([]);
   };
 
   return (

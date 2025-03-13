@@ -55,7 +55,7 @@ export const competencyQuestions: Question[] = [
 ];
 
 export const mockSTARRAnswer = {
-  situation: "During my time at XYZ Company, we faced a critical deadline for a major client project that required coordination across multiple departments.",
+  situation: "During my time at my previous company, we faced a critical deadline for a major client project that required coordination across multiple departments.",
   task: "As the project lead, I needed to ensure all teams were aligned and working efficiently to complete deliverables on time despite significant resource constraints.",
   action: "I implemented a daily stand-up meeting structure to increase visibility across teams, created a shared tracking document for real-time progress updates, and personally facilitated cross-team dependencies to remove blockers quickly.",
   result: "We successfully delivered the project two days ahead of schedule, exceeding the client's expectations. The client subsequently increased their contract value by 15% and provided an excellent testimonial that helped secure two new clients.",
