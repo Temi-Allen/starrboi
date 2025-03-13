@@ -1,13 +1,39 @@
-// Update this page (the content is just a fallback if you fail to update the page)
 
-const Index = () => {
+import React from 'react';
+import { CVProvider, useCV } from '@/context/CVContext';
+import Header from '@/components/Header';
+import CVUpload from '@/components/CVUpload';
+import QuestionList from '@/components/QuestionList';
+import AnswerGenerator from '@/components/AnswerGenerator';
+import Footer from '@/components/Footer';
+import { Step } from '@/utils/types';
+
+const StepContent: React.FC = () => {
+  const { currentStep } = useCV();
+  
+  switch (currentStep) {
+    case Step.UPLOAD:
+      return <CVUpload />;
+    case Step.QUESTIONS:
+      return <QuestionList />;
+    case Step.ANSWERS:
+      return <AnswerGenerator />;
+    default:
+      return <CVUpload />;
+  }
+};
+
+const Index: React.FC = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
+    <CVProvider>
+      <div className="min-h-screen flex flex-col">
+        <Header />
+        <main className="flex-1 pt-24 pb-12">
+          <StepContent />
+        </main>
+        <Footer />
       </div>
-    </div>
+    </CVProvider>
   );
 };
 
